@@ -1,11 +1,18 @@
 pipeline {
     agent any
     environment {
-        AWS_SECRET_ACCESS_ID = credentials('AWS_SECRET_ACCESS_ID')
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         AWS_DEFAULT_REGION = "us-east-1"
     }
     stages {
+        stage('Checkout SCM'){
+            steps{
+                script{
+                    checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Sagar-git1/eks-terraform-jenkins.git']])
+                }
+            }
+        }
         stage('Initializing Terraform'){
             steps{
                 script{
